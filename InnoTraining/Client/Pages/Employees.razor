@@ -1,0 +1,74 @@
+﻿@using InnoTraining.Shared;
+
+@page "/employees"
+
+<h3>Employees</h3>
+
+<EditForm Model="@employee" OnValidSubmit="@HandleValidSubmit">
+
+    <div class="form-group">
+        <label>Name</label>
+        <InputText class="form-control" id="name" @bind-Value="employee.Name" />
+    </div>
+
+    <div class="form-group">
+        <label>Mobile</label>
+        <InputText class="form-control" @bind-Value="employee.Mobile"></InputText>
+    </div>
+
+    <div class="form-group">
+        <label>Telephone</label>
+        <InputText class="form-control" @bind-Value="employee.Telephone"></InputText>
+    </div>
+
+    <div class="form-group">
+        <label>Age</label>
+        <InputNumber class="form-control" @bind-Value="employee.Age"></InputNumber>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Submit</button>
+</EditForm>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Age</th>
+            <th>Telephone</th>
+            <th>BirthDate</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Employee employee in employees ?? new())
+        {
+            <tr>
+                <td>@employee.Name</td>
+                <td>@employee.Mobile</td>
+                <td>@employee.Age</td>
+                <td>@employee.Telephone</td>
+                <td>@employee.BirthDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    [Inject] public HttpClient _client { get; set; }
+
+    Employee employee = new();
+
+    List<Employee>? employees = new();
+
+
+    protected override async Task OnInitializedAsync() => employees = await GetEmployees();
+
+    private async Task<List<Employee>?> GetEmployees() => await _client.GetFromJsonAsync<List<Employee>>("api/employees");
+
+    private async Task HandleValidSubmit()
+    {
+        await _client.PostAsJsonAsync<Employee>("api/employees", employee);
+        employees = await GetEmployees();
+    }
+}
