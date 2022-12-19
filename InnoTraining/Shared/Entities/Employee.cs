@@ -1,6 +1,6 @@
 ﻿namespace InnoTraining.Shared;
 
-public class Employee : BaseSettingEntity
+public class Employee : BaseSettingsEntity
 {
     public string? Mobile { get; set; }
     public int Age { get; set; }

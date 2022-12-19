@@ -12,21 +12,22 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InnoTraining.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221208100439_AddEmployees")]
-    partial class AddEmployees
+    [Migration("20221219161806_InitiateDb")]
+    partial class InitiateDb
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("InnoTraining.Shared.Employee", b =>
                 {
-                    b.Property<Guid?>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -51,7 +52,10 @@ namespace InnoTraining.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OurEmployees", (string)null);
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Employees", (string)null);
                 });
 #pragma warning restore 612, 618
         }

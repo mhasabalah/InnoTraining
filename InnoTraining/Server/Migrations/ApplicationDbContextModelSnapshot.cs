@@ -17,10 +17,10 @@ namespace InnoTraining.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("InnoTraining.Shared.Employee", b =>
                 {
@@ -49,7 +49,10 @@ namespace InnoTraining.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OurEmployees", (string)null);
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Employees", (string)null);
                 });
 #pragma warning restore 612, 618
         }

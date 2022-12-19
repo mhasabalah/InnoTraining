@@ -3,16 +3,21 @@
 <h3>Employees</h3>
 
 <EditForm Model="@employee" OnValidSubmit="@HandleValidSubmit">
+    <FluentValidationValidator />
 
     <div class="form-group">
         <label>Name</label>
         <InputText class="form-control" id="name" @bind-Value="employee.Name" />
     </div>
+    <ValidationMessage For="@(() => employee.Name)" />
+
 
     <div class="form-group">
         <label>Mobile</label>
         <InputText class="form-control" @bind-Value="employee.Mobile"></InputText>
     </div>
+    <ValidationMessage For="@(() => employee.Mobile)" />
+
 
     <div class="form-group">
         <label>Telephone</label>
@@ -57,7 +62,7 @@
 
     Employee employee = new();
 
-    List<Employee>? employees = new();
+    List<Employee> employees = new();
 
 
     protected override async Task OnInitializedAsync() => employees = await GetEmployees();
